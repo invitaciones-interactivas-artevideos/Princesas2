@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Mis 15 Años - Cayetana</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --color-principal-rosa: #fdf5f7;
+            --color-secundario-rosa-fuerte: #d36b8e;
+            --color-dorado-brillante: #c59b48;
+            --color-dorado-claro: #ebd08d;
+            --color-fondo-crema: #fffdf5;
+            --fuente-elegante: 'Great Vibes', cursive;
+            --fuente-texto: 'Playfair Display', serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { font-family: var(--fuente-texto); background-color: #222; color: #4a4a4a; overflow-x: hidden; display: flex; justify-content: center; }
+
+        .invitation-container {
+            width: 100%; max-width: 450px; background-color: var(--color-fondo-crema); min-height: 100vh;
+            position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.5); overflow: hidden; 
+        }
+
+        /* --- FONDO DE VIDEO EN MOVIMIENTO --- */
+        .animated-bg-wrapper { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; overflow: hidden; }
+        .animated-bg-wrapper video { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+
+        /* --- DECORACIONES PNG FLOTANTES --- */
+        .decor-img { position: absolute; z-index: 10; pointer-events: none; width: 40%; max-width: 180px; filter: drop-shadow(0px 5px 5px rgba(0,0,0,0.2)); }
+        .decor-top-left { top: -10px; left: -20px; }
+        .decor-top-right { top: -10px; right: -20px; transform: scaleX(-1); }
+        .decor-middle-left { top: 35%; left: -20px; width: 30%; }
+        .decor-middle-right { top: 60%; right: -20px; width: 30%; transform: scaleX(-1); }
+        .decor-bottom-left { bottom: -10px; left: -20px; }
+        .decor-bottom-right { bottom: -10px; right: -20px; transform: scaleX(-1); }
+        
+        .decor-small { width: 15%; max-width: 60px; z-index: 12; animation: float 3s ease-in-out infinite; }
+
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+
+        /* --- PORTADA (SOBRE) --- */
+        #cover {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-principal-rosa);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 100; cursor: pointer; transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+        }
+        #cover.hidden { transform: translateY(-100vh); opacity: 0; pointer-events: none; }
+        .cover-name { font-family: var(--fuente-elegante); font-size: 3.5rem; color: var(--color-secundario-rosa-fuerte); margin: 10px 0; }
+        
+        .envelope { position: relative; width: 280px; height: 180px; background: #e8c3cc; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); margin: 30px 0; }
+        .envelope-flap { 
+            position: absolute; top: 0; left: 0; width: 0; height: 0; 
+            border-left: 140px solid transparent; border-right: 140px solid transparent; border-top: 100px solid #e8c3cc; 
+            z-index: 3; transform-origin: top; transition: transform 0.6s ease-in-out, opacity 0.4s ease; 
+        }
+        .envelope-left { position: absolute; top: 0; left: 0; width: 0; height: 0; border-top: 90px solid transparent; border-bottom: 90px solid transparent; border-left: 140px solid #d36b8e; z-index: 1; }
+        .envelope-right { position: absolute; top: 0; right: 0; width: 0; height: 0; border-top: 90px solid transparent; border-bottom: 90px solid transparent; border-right: 140px solid #d36b8e; z-index: 1; }
+        .envelope-bottom { position: absolute; bottom: 0; left: 0; width: 0; height: 0; border-left: 140px solid transparent; border-right: 140px solid transparent; border-bottom: 90px solid #c7567b; z-index: 2; }
+        .wax-seal { position: absolute; top: 100px; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: var(--color-dorado-brillante); border-radius: 50%; z-index: 4; display: flex; justify-content: center; align-items: center; color: #fff; font-family: var(--fuente-elegante); font-size: 2rem; transition: opacity 0.4s ease; }
+
+        /* --- CUERPO PRINCIPAL --- */
+        #main-invitation { display: none; position: relative; z-index: 5; }
+        .content-layer { position: relative; z-index: 5; padding: 40px 20px; min-height: 100vh; }
+
+        /* CAJAS */
+        .gold-section {
+            background-color: rgba(255, 255, 255, 0.75); backdrop-filter: blur(5px);
+            border: 2px solid var(--color-dorado-brillante); border-radius: 15px;
+            padding: 30px 20px; margin-bottom: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            position: relative; z-index: 5; text-align: center;
+        }
+
+        .title-fancy { font-family: var(--fuente-elegante); font-size: 3rem; color: var(--color-dorado-brillante); margin-bottom: 10px; }
+        .name-main { font-family: var(--fuente-elegante); font-size: 3.5rem; color: var(--color-dorado-brillante); margin: -10px 0 20px; line-height: 1.1; }
+        
+        .play-btn { background-color: var(--color-secundario-rosa-fuerte); color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 1.5rem; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.2); margin-bottom: 20px; position: relative; z-index: 20; }
+        .button-call { display: inline-block; background-color: var(--color-secundario-rosa-fuerte); color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; margin-top: 20px; position: relative; z-index: 20; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;}
+        
+        /* MARCO DORADO REAL CON RELIEVE Y ESTILO BARROCO */
+        .central-photo-frame { 
+            width: 220px; 
+            height: 300px; 
+            margin: 0 auto 30px; 
+            background: linear-gradient(135deg, #dfbc6b, #c59b48, #9e7529);
+            padding: 8px;
+            border-radius: 110px 110px 15px 15px; 
+            box-shadow: 0 10px 25px rgba(197, 155, 72, 0.6), inset 0 0 15px rgba(0, 0, 0, 0.3);
+            position: relative; 
+            z-index: 5;
+        }
+        .central-photo-frame::before {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 2px dashed rgba(255, 255, 255, 0.8);
+            border-radius: 107px 107px 12px 12px;
+            pointer-events: none;
+            z-index: 6;
+        }
+        .central-photo-frame img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            border-radius: 102px 102px 10px 10px;
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* CALENDARIO FIJO */
+        .calendar { width: 100%; font-family: sans-serif; border-collapse: collapse; margin: 20px 0; table-layout: fixed; }
+        .calendar th, .calendar td { text-align: center; padding: 10px 0; }
+        .calendar th { color: var(--color-dorado-brillante); }
+        .calendar .highlight-date { background-color: var(--color-secundario-rosa-fuerte); color: white; border-radius: 50%; width: 35px; height: 35px; display: inline-flex; justify-content: center; align-items: center; font-weight: bold; margin: 0 auto; }
+
+        /* CUENTA REGRESIVA (OPTIMIZADA PARA QUE NO SE SALGAN LOS TEXTOS) */
+        .countdown-box { display: flex; justify-content: space-between; margin-top: 20px; font-family: sans-serif; gap: 4px; }
+        .countdown-item { background: rgba(253, 245, 247, 0.9); border: 1px solid var(--color-dorado-claro); border-radius: 8px; padding: 8px 2px; width: 24%; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .countdown-number { font-size: 1.4rem; font-weight: bold; color: var(--color-secundario-rosa-fuerte); display: block; }
+        .countdown-label { font-size: 0.55rem; text-transform: uppercase; color: #555; margin-top: 4px; letter-spacing: 0px; white-space: nowrap; display: block; }
+
+        .gallery-container { width: 100%; overflow: hidden; position: relative; margin: 20px 0; }
+        .gallery-slide { display: flex; transition: transform 0.5s ease-in-out; }
+        .gallery-item { min-width: 100%; padding: 0 10px; }
+        .gallery-item-frame { width: 100%; height: 250px; border: 4px solid var(--color-dorado-claro); border-radius: 15px; overflow: hidden; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-nav { display: flex; justify-content: space-around; margin-top: 15px; }
+        .gallery-nav button { background-color: var(--color-secundario-rosa-fuerte); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; position: relative; z-index: 20;}
+
+        /* MODAL DE DATOS BANCARIOS */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        .modal-content { background: var(--color-fondo-crema); padding: 30px; border-radius: 15px; text-align: center; max-width: 90%; width: 350px; position: relative; border: 2px solid var(--color-dorado-brillante); transform: translateY(-20px); transition: transform 0.3s; }
+        .modal-overlay.show { opacity: 1; }
+        .modal-overlay.show .modal-content { transform: translateY(0); }
+        .close-modal { position: absolute; top: 10px; right: 15px; font-size: 2rem; cursor: pointer; color: var(--color-secundario-rosa-fuerte); line-height: 1; }
+        .datos-banco { font-family: sans-serif; color: #4a4a4a; text-align: left; margin-top: 15px; line-height: 1.6; }
+
+    </style>
+</head>
+<body>
+
+    <audio id="invitationSong" loop>
+        <source src="TU_CANCION.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="modalBanco" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModal()">&times;</span>
+            <p class="title-fancy" style="font-size: 2.5rem; margin-bottom: 5px;">Datos Bancarios</p>
+            <i class="fas fa-university" style="font-size: 2rem; color: var(--color-dorado-brillante);"></i>
+            <div class="datos-banco">
+                <p><strong>Banco:</strong> BROU</p>
+                <p><strong>Caja de Ahorro $:</strong> 1234567-8</p>
+                <p><strong>Titular:</strong> Cayetana Torres</p>
+                <hr style="border: 0.5px solid #ccc; margin: 15px 0;">
+                <p><strong>Colectivo Abitab:</strong> 12345</p>
+                <p><strong>Titular:</strong> Cayetana Torres</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="invitation-container">
+
+        <div class="animated-bg-wrapper">
+            <video autoplay loop muted playsinline>
+                <source src="fondo.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div id="cover" onclick="openInvitation()">
+            <p style="color: var(--color-dorado-brillante); text-transform: uppercase; letter-spacing: 2px;">Mis 15 Años</p>
+            <h1 class="cover-name">Cayetana</h1>
+            <div class="envelope">
+                <div class="envelope-flap" id="flap"></div>
+                <div class="envelope-left"></div>
+                <div class="envelope-right"></div>
+                <div class="envelope-bottom"></div>
+                <div class="wax-seal" id="seal">C</div>
+            </div>
+            <p style="color:var(--color-secundario-rosa-fuerte); font-weight:bold;">TOCA PARA ABRIR</p>
+        </div>
+
+        <div id="main-invitation">
+            <div class="content-layer">
+
+                <img src="https://via.placeholder.com/200x200.png?text=FLORES" class="decor-img decor-top-left">
+                <img src="https://via.placeholder.com/200x200.png?text=FLORES" class="decor-img decor-top-right">
+                <img src="https://via.placeholder.com/200x200.png?text=FLORES" class="decor-img decor-bottom-left">
+                <img src="https://via.placeholder.com/200x200.png?text=FLORES" class="decor-img decor-bottom-right">
+                <img src="https://via.placeholder.com/150x150.png?text=FLORES" class="decor-img decor-middle-left">
+                <img src="https://via.placeholder.com/150x150.png?text=FLORES" class="decor-img decor-middle-right">
+
+                <section class="gold-section" style="margin-top: 20px;">
+                    <p style="text-transform: uppercase; letter-spacing: 2px; color: var(--color-secundario-rosa-fuerte); font-weight: bold;">Estás cordialmente invitado</p>
+                    <p class="name-main">Cayetana<br>Torres</p>
+                    <button id="musicPlayBtn" class="play-btn" onclick="toggleMusic()"><i id="musicIcon" class="fas fa-play"></i></button>
+                    <p style="color: var(--color-secundario-rosa-fuerte); font-style: italic;">Presiona play para escuchar mi canción</p>
+                </section>
+
+                <div class="central-photo-frame">
+                    <img src="https://via.placeholder.com/220x300.png?text=FOTO+QUINCEA%C3%91ERA" alt="Cayetana">
+                </div>
+
+                <section class="gold-section">
+                    <img src="https://via.placeholder.com/100x100.png?text=CARRUAJE" style="width: 80px; margin-bottom: 15px;">
+                    <p style="font-size: 1.2rem; font-style: italic;">"Los sueños se hacen realidad cuando se viven con ilusión..."</p>
+                </section>
+
+                <section class="gold-section">
+                    <p class="title-fancy">Reserva la fecha</p>
+                    <p class="name-main" style="font-size: 2.5rem;">Julio 2026</p>
+                    
+                    <table class="calendar">
+                        <thead><tr> <th>L</th> <th>M</th> <th>M</th> <th>J</th> <th>V</th> <th>S</th> <th>D</th> </tr></thead>
+                        <tbody id="calendarBody"></tbody>
+                    </table>
+
+                    <div style="margin-top: 25px; border-top: 1px dashed var(--color-dorado-claro); padding-top: 20px;">
+                        <p id="countdown-title" style="font-family: var(--fuente-elegante); font-size: 2rem; color: var(--color-dorado-brillante);">Faltan...</p>
+                        <div class="countdown-box">
+                            <div class="countdown-item">
+                                <span id="days" class="countdown-number">00</span>
+                                <span class="countdown-label">Días</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span id="hours" class="countdown-number">00</span>
+                                <span class="countdown-label">Horas</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span id="minutes" class="countdown-number">00</span>
+                                <span class="countdown-label">Minutos</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span id="seconds" class="countdown-number">00</span>
+                                <span class="countdown-label">Segundos</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="gold-section">
+                    <p class="title-fancy">Galería</p>
+                    <div class="gallery-container">
+                        <div class="gallery-slide" id="gallerySlide">
+                            <div class="gallery-item"><div class="gallery-item-frame"><img src="https://via.placeholder.com/300x300.png?text=FOTO+1"></div></div>
+                            <div class="gallery-item"><div class="gallery-item-frame"><img src="https://via.placeholder.com/300x300.png?text=FOTO+2"></div></div>
+                            <div class="gallery-item"><div class="gallery-item-frame"><img src="https://via.placeholder.com/300x300.png?text=FOTO+3"></div></div>
+                        </div>
+                    </div>
+                    <div class="gallery-nav">
+                        <button type="button" onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+                        <button type="button" onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </section>
+
+                <section class="gold-section">
+                    <p class="title-fancy">Recepción</p>
+                    <i class="fas fa-map-marker-alt" style="font-size: 2rem; color: var(--color-secundario-rosa-fuerte);"></i>
+                    <p style="font-weight: bold; margin-top:10px;">Salón El Palacio</p>
+                    <p>Calle Falsa 123</p>
+                    <p style="margin-top: 8px; color: var(--color-secundario-rosa-fuerte); font-weight: bold;"><i class="far fa-clock"></i> Horario: 20:00 hs</p>
+                    <a href="LINK_UBICACION_MAPS" class="button-call">UBICACIÓN MAPS</a>
+                </section>
+
+                <section class="gold-section">
+                    <p class="title-fancy">Asistencia</p>
+                    <i id="icono-asistencia" class="fab fa-whatsapp" style="font-size: 2.5rem; color: #25D366;"></i>
+                    <p id="texto-asistencia">Por favor confirma antes del 23 de julio.</p>
+                    <a href="LINK_DE_TU_WHATSAPP" id="btn-whatsapp" class="button-call" style="background-color: #25D366; display: none;">CONFIRMAR</a>
+                    <a href="LINK_DE_TU_FORMULARIO" id="btn-form" class="button-call" style="background-color: var(--color-dorado-brillante); display: none;">LLENAR FORMULARIO</a>
+                </section>
+
+                <section class="gold-section" id="sec-cancion" style="display: none;">
+                    <img src="https://via.placeholder.com/80x80.png?text=PNG" class="decor-img decor-small" style="top: -15px; left: -10px;">
+                    <p class="title-fancy">Música</p>
+                    <i class="fas fa-headphones-alt" style="font-size: 2rem; color: var(--color-dorado-brillante);"></i>
+                    <p style="margin-top: 10px;">¿Qué canción no puede faltar en la fiesta?</p>
+                    <a href="LINK_FORMULARIO_O_SPOTIFY" class="button-call">SUGERIR CANCIÓN</a>
+                </section>
+
+                <section class="gold-section" id="sec-album" style="display: none;">
+                    <p class="title-fancy">Momentos</p>
+                    <i class="fas fa-camera" style="font-size: 2rem; color: var(--color-secundario-rosa-fuerte);"></i>
+                    <p style="margin-top: 10px;">Ayúdame a capturar los mejores momentos subiendo tus fotos aquí.</p>
+                    <a href="LINK_GOOGLE_PHOTOS_O_DRIVE" class="button-call">COMPARTIR FOTOS</a>
+                </section>
+
+                <section class="gold-section" id="sec-ig" style="display: none;">
+                    <img src="https://via.placeholder.com/80x80.png?text=PNG" class="decor-img decor-small" style="bottom: -15px; right: -10px;">
+                    <p class="title-fancy">Instagram</p>
+                    <i class="fab fa-instagram" style="font-size: 2.5rem; color: #E1306C;"></i>
+                    <p style="margin-top: 10px;">¡Usa nuestro hashtag para que no me pierda de nada!</p>
+                    <p style="font-weight: bold; color: var(--color-dorado-brillante); font-size: 1.2rem;">#Mis15Cayetana</p>
+                    <a href="LINK_A_TU_PERFIL_O_HASHTAG" class="button-call">IR A INSTAGRAM</a>
+                </section>
+
+                <section class="gold-section">
+                    <p class="title-fancy">Vestimenta</p>
+                    <p style="font-weight: bold; text-transform: uppercase;">Elegante</p>
+                    <p>Prohibido el uso de color rosado. Exclusivo para la quinceañera.</p>
+                </section>
+
+                <section class="gold-section">
+                    <p class="title-fancy">Regalo</p>
+                    <i class="fas fa-gift" style="font-size: 2rem; color: var(--color-dorado-brillante);"></i>
+                    <p style="margin-top: 10px;">Tu presencia es mi mejor regalo. Si deseas tener un detalle conmigo, puedes hacerlo a través de la siguiente cuenta:</p>
+                    <button class="button-call" onclick="abrirModal()">VER DATOS BANCARIOS</button>
+                </section>
+
+                <div style="text-align: center; margin: 50px 0 80px; position: relative; z-index: 5;">
+                    <img src="https://via.placeholder.com/150x200.png?text=PRINCESA" style="width: 150px; margin-bottom: 20px;">
+                    <p class="title-fancy">¡Te espero!</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // PANEL DE CONTROL - EDITA AQUÍ PARA ENCENDER/APAGAR SECCIONES (true / false)
+        // =========================================================================
+        const CONF_INVITACION = {
+            confirmarConFormulario: false, // false = Usa WhatsApp | true = Usa Formulario de Google
+            mostrarSugerenciaCancion: true, // ¿Quieres sección para sugerir música?
+            mostrarAlbumFotos: true,       // ¿Quieres sección para subir fotos/Google Photos?
+            mostrarInstagram: true         // ¿Quieres sección de Instagram / Hashtag?
+        };
+        // =========================================================================
+
+        const cover = document.getElementById('cover');
+        const mainInvitation = document.getElementById('main-invitation');
+        const song = document.getElementById('invitationSong');
+        const musicIcon = document.getElementById('musicIcon');
+        const gallerySlide = document.getElementById('gallerySlide');
+        const modal = document.getElementById('modalBanco');
+        
+        let isPlaying = false;
+        let currentGallerySlide = 0;
+        const totalGallerySlides = 3; 
+        let modalAbiertoPorHistorial = false;
+
+        // Aplicar configuración inicial
+        function aplicarConfiguracion() {
+            if (CONF_INVITACION.confirmarConFormulario) {
+                document.getElementById('btn-whatsapp').style.display = 'none';
+                document.getElementById('btn-form').style.display = 'inline-block';
+                document.getElementById('icono-asistencia').className = "fas fa-clipboard-list";
+                document.getElementById('icono-asistencia').style.color = "var(--color-dorado-brillante)";
+            } else {
+                document.getElementById('btn-whatsapp').style.display = 'inline-block';
+                document.getElementById('btn-form').style.display = 'none';
+            }
+
+            if(CONF_INVITACION.mostrarSugerenciaCancion) document.getElementById('sec-cancion').style.display = 'block';
+            if(CONF_INVITACION.mostrarAlbumFotos) document.getElementById('sec-album').style.display = 'block';
+            if(CONF_INVITACION.mostrarInstagram) document.getElementById('sec-ig').style.display = 'block';
+        }
+
+        aplicarConfiguracion();
+
+        function openInvitation() {
+            const flap = document.getElementById('flap');
+            const seal = document.getElementById('seal');
+            
+            flap.style.transform = 'scaleY(0)';
+            seal.style.opacity = '0';
+            
+            setTimeout(() => {
+                cover.classList.add('hidden');
+                mainInvitation.style.display = 'block';
+                generateCalendar(7, 2026); 
+                iniciarCuentaRegresiva();
+                toggleMusic(); 
+            }, 500);
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                song.pause();
+                musicIcon.classList.remove('fa-pause');
+                musicIcon.classList.add('fa-play');
+            } else {
+                let playPromise = song.play();
+                if (playPromise !== undefined) { playPromise.catch(error => { console.log("Audio pendiente."); }); }
+                musicIcon.classList.remove('fa-play');
+                musicIcon.classList.add('fa-pause');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // FUNCIONES DEL MODAL BANCARIO (CON PROTECCIÓN DE HISTORIAL PARA BOTÓN ATRÁS)
+        function abrirModal() {
+            modal.style.display = "flex";
+            setTimeout(() => modal.classList.add('show'), 10);
+            history.pushState({ modalOpen: true }, "");
+            modalAbiertoPorHistorial = true;
+        }
+
+        function cerrarModal(desdePopState = false) {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+
+            if (modalAbiertoPorHistorial && !desdePopState) {
+                modalAbiertoPorHistorial = false;
+                history.back();
+            } else {
+                modalAbiertoPorHistorial = false;
+            }
+        }
+
+        window.addEventListener('popstate', (event) => {
+            if (modal.style.display === "flex") {
+                cerrarModal(true);
+            }
+        });
+
+        // CALENDARIO FIJO
+        function generateCalendar(month, year) {
+            const calendarBody = document.getElementById('calendarBody');
+            calendarBody.innerHTML = ''; 
+            const firstDay = (new Date(year, month - 1)).getDay(); 
+            const daysInMonth = 32 - new Date(year, month - 1, 32).getDate();
+            
+            let date = 1;
+            for (let i = 0; i < 6; i++) { 
+                let row = document.createElement('tr');
+                for (let j = 0; j < 7; j++) { 
+                    if (i === 0 && j < (firstDay === 0 ? 6 : firstDay - 1)) {
+                        row.appendChild(document.createElement('td'));
+                    } else if (date > daysInMonth) {
+                        row.appendChild(document.createElement('td'));
+                    } else {
+                        let cell = document.createElement('td');
+                        let cellText = document.createTextNode(date);
+                        if (date === 30) { 
+                            let span = document.createElement('span');
+                            span.classList.add('highlight-date');
+                            span.appendChild(cellText);
+                            cell.appendChild(span);
+                        } else {
+                            cell.appendChild(cellText);
+                        }
+                        row.appendChild(cell);
+                        date++;
+                    }
+                }
+                calendarBody.appendChild(row);
+                if (date > daysInMonth) break;
+            }
+        }
+
+        // CUENTA REGRESIVA
+        function iniciarCuentaRegresiva() {
+            const fechaEvento = new Date("July 30, 2026 20:00:00").getTime();
+
+            const timer = setInterval(() => {
+                const ahora = new Date().getTime();
+                const diferencia = fechaEvento - ahora;
+
+                if (diferencia > 0) {
+                    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+                    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                    const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+                    document.getElementById("days").innerText = String(dias).padStart(2, '0');
+                    document.getElementById("hours").innerText = String(horas).padStart(2, '0');
+                    document.getElementById("minutes").innerText = String(minutos).padStart(2, '0');
+                    document.getElementById("seconds").innerText = String(segundos).padStart(2, '0');
+                } else {
+                    document.getElementById("days").innerText = "00";
+                    document.getElementById("hours").innerText = "00";
+                    document.getElementById("minutes").innerText = "00";
+                    document.getElementById("seconds").innerText = "00";
+                    document.getElementById("countdown-title").innerText = "¡Llegó el día!";
+                    clearInterval(timer);
+                }
+            }, 1000);
+        }
+
+        function showGallerySlide() {
+            const offset = -currentGallerySlide * 100;
+            gallerySlide.style.transform = `translateX(${offset}%)`;
+        }
+
+        function nextSlide() { currentGallerySlide = (currentGallerySlide + 1) % totalGallerySlides; showGallerySlide(); }
+        function prevSlide() { currentGallerySlide = (currentGallerySlide - 1 + totalGallerySlides) % totalGallerySlides; showGallerySlide(); }
+    </script>
+</body>
+</html>
