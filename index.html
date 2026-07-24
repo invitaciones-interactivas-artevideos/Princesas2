@@ -126,17 +126,17 @@
 
         .button-call { display: inline-block; background-color: var(--color-secundario-rosa-fuerte); color: white; text-decoration: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; margin-top: 20px; position: relative; z-index: 20; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-family: sans-serif; font-size: 0.9rem;}
         
-.marco-elegante { 
-    position: relative; /* <--- ¡ESTO ES LO NUEVO! */
-    border: 6px double var(--color-dorado-brillante); 
-    border-radius: 12px; 
-    padding: 8px; 
-    background-color: var(--color-fondo-crema); 
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
-    margin: 0 auto 40px; 
-    width: 90%; 
-    text-align: center; 
-}
+        .marco-elegante { 
+            position: relative; /* <--- ¡ESTO ES LO NUEVO! */
+            border: 6px double var(--color-dorado-brillante); 
+            border-radius: 12px; 
+            padding: 8px; 
+            background-color: var(--color-fondo-crema); 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2); 
+            margin: 0 auto 40px; 
+            width: 90%; 
+            text-align: center; 
+        }
         .marco-elegante img { width: 100%; border-radius: 8px; display: block; }
         .box-frase { margin-top: 80px; }
 
@@ -147,7 +147,7 @@
 
         .countdown-box { display: flex; justify-content: space-between; margin-top: 15px; font-family: sans-serif; gap: 4px; }
         .countdown-item { background: rgba(253, 245, 247, 0.9); border: 1px solid var(--color-dorado-claro); border-radius: 8px; padding: 8px 2px; width: 24%; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .countdown-number { font-size: 1.5rem; font-weight: bold; color: var(--color-secundario-rosa-fuerte); display: block; }
+        .countdown-number { font-family: var(--fuente-texto); font-size: 2.2rem; font-weight: normal; color: var(--color-secundario-rosa-fuerte); display: block; }
         .countdown-label { font-size: 0.6rem; text-transform: uppercase; color: #555; margin-top: 4px; white-space: nowrap; display: block; }
 
         .gallery-container { width: 100%; overflow: hidden; position: relative; margin: 20px 0; }
@@ -246,7 +246,7 @@
 
                 <div id="sec-foto-principal" class="marco-elegante">
                     <img src="portada.jpg" alt="Foto Principal" onerror="this.style.display='none'">
-                </div>Freser
+                </div>
                 
 
                 <section class="gold-section box-frase" id="sec-frase">
@@ -299,10 +299,10 @@
 
                 <section class="gold-section" id="sec-asistencia">
                     <p class="title-fancy">Asistencia</p>
-                    <i id="icono-asistencia" class="fab fa-whatsapp" style="font-size: 2.8rem; color: #25D366;"></i>
-                    <p id="texto-asistencia" style="margin-top: 10px;">Por favor confirma antes del 23 de novimbre</p>
-                    <a href="LINK_DE_TU_WHATSAPP" id="btn-whatsapp" class="button-call" style="background-color: #25D366; display: none;">CONFIRMAR</a>
-                    <a href="LINK_DE_TU_FORMULARIO" id="btn-form" class="button-call" style="background-color: var(--color-dorado-brillante); display: none;">LLENAR FORMULARIO</a>
+                    <i id="icono-asistencia" class="fab fa-whatsapp" style="font-size: 2.8rem; color: var(--color-dorado-brillante);"></i>
+                    <p id="texto-asistencia" style="margin-top: 10px;">Por favor confirma antes del 23 de noviembre</p>
+                    <a href="LINK_DE_TU_WHATSAPP" id="btn-whatsapp" class="button-call" style="display: none;">CONFIRMAR</a>
+                    <a href="LINK_DE_TU_FORMULARIO" id="btn-form" class="button-call" style="display: none;">LLENAR FORMULARIO</a>
                 </section>
 
                 <section class="gold-section" id="sec-cancion" style="display: none;">
@@ -340,9 +340,9 @@
                     <button class="button-call" onclick="abrirModal()">VER DATOS BANCARIOS</button>
                 </section>
 
-                <div style="text-align: center; margin: 50px 0 80px; position: relative; z-index: 5;" id="sec-despedida">
-                    <p class="title-fancy" style="font-size: 4rem;">¡Te espero!</p>
-                    <img src="Princesasobre.png" style="width: 450px; margin-bottom: -150px;" alt="" onerror="this.style.display='none'">
+                <div style="text-align: center; margin-top: 50px; padding-bottom: 400px; position: relative; z-index: 5;" id="sec-despedida">
+    <p class="title-fancy" style="font-size: 4rem; position: relative; z-index: 20;">¡Te espero!</p>
+</div>
                 </div>
 
             </div>
@@ -359,7 +359,8 @@
             confirmarConFormulario: false, 
             mostrarSugerenciaCancion: true,
             mostrarAlbumFotos: true,       
-            mostrarInstagram: true,        
+            mostrarInstagram: true,  
+            mostrarIconoAsistencia: true,      
             
             mesEvento: 12,                  
             anioEvento: 2026,              
@@ -499,15 +500,15 @@
                 animacionFlotar: false
             },
             secDespedida: {   // Sección Final (Te espero)
-                imagen: "", 
-                tamano: "100px",
-                anclajeVertical: "arriba",
-                distanciaVertical: "10px",
-                anclajeHorizontal: "centro",
-                distanciaHorizontal: "0px",
-                voltearEspejo: false,
-                animacionFlotar: true
-            }
+    imagen: "Princesasobre.png", 
+    tamano: "400px",             /* Reducido un poco para que no se salga de los bordes del celular */
+    anclajeVertical: "abajo",
+    distanciaVertical: "0px",    /* 0px la apoya perfectamente en el piso */
+    anclajeHorizontal: "centro",
+    distanciaHorizontal: "0px",  
+    voltearEspejo: false,
+    animacionFlotar: false       
+}
         };
         /* ==================== FIN DE LOS MENÚS DE CONFIGURACIÓN ================== */
 
@@ -525,18 +526,6 @@
         const totalGallerySlides = 3; 
         let modalAbiertoPorHistorial = false;
 
-        // VERIFICAR SI LA INVITACIÓN YA FUE ABIERTA
-        document.addEventListener("DOMContentLoaded", () => {
-            if (sessionStorage.getItem("invitacionAbierta") === "true") {
-                cover.classList.add('hidden');
-                cover.style.display = 'none'; 
-                mainInvitation.style.display = 'block';
-                generateCalendar(CONF_INVITACION.mesEvento, CONF_INVITACION.anioEvento); 
-                iniciarCuentaRegresiva();
-                musicBtn.style.display = 'flex';
-            }
-        });
-
         function aplicarConfiguracion() {
             document.getElementById('seal').innerText = CONF_INVITACION.letraSello;
 
@@ -552,6 +541,10 @@
             } else {
                 document.getElementById('btn-whatsapp').style.display = 'inline-block';
                 document.getElementById('btn-form').style.display = 'none';
+            }
+
+            if (!CONF_INVITACION.mostrarIconoAsistencia) {
+                document.getElementById('icono-asistencia').style.display = 'none';
             }
 
             if(CONF_INVITACION.mostrarSugerenciaCancion) document.getElementById('sec-cancion').style.display = 'block';
@@ -635,9 +628,6 @@
                 
                 musicBtn.style.display = 'flex';
                 toggleMusic(); 
-                
-                // GUARDAR EL ESTADO EN MEMORIA 
-                sessionStorage.setItem("invitacionAbierta", "true");
             }, 600);
         }
 
